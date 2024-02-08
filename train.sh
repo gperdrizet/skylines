@@ -22,4 +22,4 @@ export CUDA_VISIBLE_DEVICES=1,2
 export TF_FORCE_GPU_ALLOW_GROWTH=false
 
 # Start GANN training run
-python ./skylines/dc-gan3.py
+python ./skylines/dc-gan.py
