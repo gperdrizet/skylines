@@ -44,7 +44,7 @@ def define_discriminator(learning_rate, in_shape=(1024, 1024, 3)):
     model.add(Dropout(0.4))
     model.add(Dense(1, activation='sigmoid'))
     # compile model
-    opt = Adam(lr=learning_rate, beta_1=0.5)
+    opt = Adam(learning_rate=learning_rate, beta_1=0.5)
     model.compile(loss='binary_crossentropy',
                   optimizer=opt, metrics=['accuracy'])
     return model
@@ -52,7 +52,7 @@ def define_discriminator(learning_rate, in_shape=(1024, 1024, 3)):
 # define the standalone generator model
 
 
-def define_generator(latent_dim, learning_rate):
+def define_generator(latent_dim):
     model = Sequential()
     # foundation for 32x32 image
     n_nodes = 1024 * 32 * 32
@@ -93,6 +93,6 @@ def define_gan(g_model, d_model, learning_rate):
     # add the discriminator
     model.add(d_model)
     # compile model
-    opt = Adam(lr=learning_rate, beta_1=0.5)
+    opt = Adam(learning_rate=learning_rate, beta_1=0.5)
     model.compile(loss='binary_crossentropy', optimizer=opt)
     return model

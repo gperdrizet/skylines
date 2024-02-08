@@ -11,6 +11,12 @@ from tensorflow.python.client import device_lib
 #os.environ["CUDA_VISIBLE_DEVICES"] = "0,1"
 
 if __name__ == '__main__':
+
+    # Create or clear output directories as appropriate
+    _ = data_funcs.prep_output_dir(config.MODEL_CHECKPOINT_DIR)
+    _ = data_funcs.prep_output_dir(config.SPECIMEN_DIR)
+    _ = data_funcs.prep_output_dir(config.IMAGE_OUTPUT_DIR)
+
     print("Num GPUs Available: ", len(
         tf.config.experimental.list_physical_devices('GPU')))
 
@@ -41,10 +47,7 @@ if __name__ == '__main__':
 
         print(f'\nDiscriminator model:\n{discriminator_model.summary()}')
 
-        generator_model = models.define_generator(
-            latent_dim,
-            config.GENERATOR_LEARNING_RATE
-        )
+        generator_model = models.define_generator(latent_dim)
 
         print(f'\nGenerator model:\n{generator_model.summary()}')
 
@@ -54,12 +57,12 @@ if __name__ == '__main__':
             config.GAN_LEARNING_RATE
         )
 
-        # generate static set of points in latent space to generate
+        # Generate static set of points in latent space to generate
         # training video frames. Save these for later incase we need
         # to stop and restart training
         latent_points = training_funcs.generate_latent_points(latent_dim, 9)
 
-        with open(config.VIDEO_FRAME_LATENT_POINTS, 'wb') as f:
+        with open(f'{config.IMAGE_OUTPUT_DIR}/latent_points.pkl', 'wb') as f:
             pickle.dump(latent_points, f)
 
         f.close()
@@ -77,6 +80,8 @@ if __name__ == '__main__':
             image_count,
             config.EPOCHS,
             config.BATCH_SIZE,
+            config.MODEL_CHECKPOINT_DIR,
             config.CHECKPOINT_SAVE_FREQUENCY,
-            config.PROJECT_NAME
+            config.PROJECT_NAME,
+            config.IMAGE_OUTPUT_DIR
         )

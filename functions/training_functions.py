@@ -30,7 +30,7 @@ def generate_fake_samples(g_model, latent_dim, n_samples):
 # save 3x3 grid of generated images
 
 
-def save_frame(g_model, latent_points, frame):
+def save_frame(g_model, latent_points, frame, image_output_dir):
     # create images from latent points
     images = g_model.predict(latent_points)
     # scale images into range 0.0, 1.0 for plotting as RGB
@@ -51,7 +51,8 @@ def save_frame(g_model, latent_points, frame):
     plt.subplots_adjust(wspace=-0.019, hspace=0)
 
     # save plot to file
-    filename = './gan_output/frame%07d.jpg' % (frame)
+    filename = f'{image_output_dir}/frame{frame:07d}.jpg'
+    #filename = './gan_output/frame%07d.jpg' % (frame)
     plt.savefig(filename, bbox_inches='tight', pad_inches=0)
     plt.close()
 
@@ -72,9 +73,11 @@ def train(
     latent_points, 
     image_count, 
     n_epochs, 
-    n_batch, 
+    n_batch,
+    model_checkpoint_dir,
     checkpoint_save_frequency, 
-    project_name
+    project_name,
+    image_output_dir
 ):
 
     bat_per_epo = int((image_count) / n_batch)
@@ -108,18 +111,18 @@ def train(
             # summarize loss on this batch
             print(f'{project_name}-{frame}: d1={d_loss1:.3f}, d2={d_loss2:.3f}, g={g_loss:.3f}')
 
-            frame = save_frame(g_model, latent_points, frame)
+            frame = save_frame(g_model, latent_points, frame, image_output_dir)
 
             if frame % checkpoint_save_frequency == 0:
-                filename = './training_checkpoints/generator_model_f%07d.h5' % (
-                    frame)
-                g_model.save(filename)
-                filename = './training_checkpoints/discriminator_model_f%07d.h5' % (
-                    frame)
-                d_model.save(filename)
-                filename = './training_checkpoints/gan_model_f%07d.h5' % (
-                    frame)
-                gan_model.save(filename)
+                # filename = './training_checkpoints/generator_model_f%07d.h5' % (
+                #     frame)
+                g_model.save(f'{model_checkpoint_dir}/generator_model_f{frame:07d}.h5')
+                # filename = './training_checkpoints/discriminator_model_f%07d.h5' % (
+                #     frame)
+                d_model.save(f'{model_checkpoint_dir}/discriminator_model_f{frame:07d}.h5')
+                # filename = './training_checkpoints/gan_model_f%07d.h5' % (
+                #     frame)
+                gan_model.save(f'{model_checkpoint_dir}/gann_model_f{frame:07d}.h5')
 
             j += 1
         i += 1

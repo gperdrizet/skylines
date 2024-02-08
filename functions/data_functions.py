@@ -1,5 +1,27 @@
+import os
+import shutil
 import pathlib
 import tensorflow as tf
+
+def prep_output_dir(output_path):
+
+    # Check if the directory exists
+    if pathlib.Path(output_path).is_dir():
+
+        # It already exists, so empty it
+        print(f'Emptying {output_path}')
+
+        for filename in os.listdir(output_path):
+            file_path = os.path.join(output_path, filename)
+            os.unlink(file_path)
+
+    else:
+
+        # It doesn't exist, so create it
+        print(f'Creating {output_path}')
+        pathlib.Path(output_path).mkdir()
+
+    return True
 
 
 def decode_img(img, image_dim):
@@ -24,9 +46,9 @@ def prep_data(image_dir, batch_size, image_dim):
     image_count = len(list(data_dir.glob('*.jpg')))
     train_ds = tf.data.Dataset.list_files(
         f'{image_dir}/*.jpg', shuffle=True)
+
     train_ds = train_ds.shuffle(image_count, reshuffle_each_iteration=True)
     AUTOTUNE = tf.data.experimental.AUTOTUNE
-    #train_ds = train_ds.map(process_path, num_parallel_calls=AUTOTUNE)
     train_ds = train_ds.map(lambda x: process_path(
         x, image_dim), num_parallel_calls=AUTOTUNE)
     train_ds = train_ds.batch(batch_size)

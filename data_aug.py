@@ -15,26 +15,26 @@ for image in Path(f'{config.RAW_IMAGE_DIR}/').rglob('*.jpg'):
         img = img.resize((config.IMAGE_DIM, config.IMAGE_DIM))
     
     except KeyboardInterrupt:
-        print('Caught keyboard interupt.')
+        print('Caught keyboard interrupt.')
         sys.exit(1)
 
     except:
         error = sys.exc_info()
         print(f'Could not load image: {error}')
 
-    # save unflipped version
+    # save un-flipped version
     try:
         destination = f'{config.PROCESSED_IMAGE_DIR}/{count:06}.jpg'
         img.save(destination)
         count += 1
     
     except KeyboardInterrupt:
-        print('Caught keyboard interupt.')
+        print('Caught keyboard interrupt.')
         sys.exit(1)
 
     except:
         error = sys.exc_info()
-        print(f'Could save orignal image: {error}')
+        print(f'Could save original image: {error}')
 
     # flip and save
     try:
@@ -44,7 +44,7 @@ for image in Path(f'{config.RAW_IMAGE_DIR}/').rglob('*.jpg'):
         count += 1
 
     except KeyboardInterrupt:
-        print('Caught keyboard interupt.')
+        print('Caught keyboard interrupt.')
         sys.exit(1)
 
     except:
