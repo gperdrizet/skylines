@@ -27,4 +27,4 @@ export CUDA_VISIBLE_DEVICES=0
 export TF_FORCE_GPU_ALLOW_GROWTH=false
 
 # Make images
-python ./skylines/generate_from_checkpoint.py $MODEL_CHECKPOINT $NUM_IMAGES
+python ./skylines/generate.py $MODEL_CHECKPOINT $NUM_IMAGES
