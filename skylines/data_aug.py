@@ -9,6 +9,8 @@ count = 0
 
 for image in Path(f'{config.RAW_IMAGE_DIR}/').rglob('*.jpg'):
 
+    print(f'Processing image: {str(image)}')
+
     # load and resize image
     try:
         img = Image.open(image)
