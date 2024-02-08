@@ -1,10 +1,14 @@
+import pickle
 from numpy import zeros
 from numpy import ones
 from numpy.random import randn
 import matplotlib.pyplot as plt
+import functions.model_definitions as models
+import functions.training_functions as training_funcs
+import tensorflow as tf
+
 
 # generate points in latent space as input for the generator
-
 
 def generate_latent_points(latent_dim, n_samples):
     # generate points in the latent space
@@ -15,8 +19,76 @@ def generate_latent_points(latent_dim, n_samples):
 
     return x_input
 
-# use the generator to generate n fake examples, with class labels
 
+# Handles resuming or not and getting models ready accordingly
+
+def prepare_models(
+    resume,
+    checkpoints,
+    resume_run_date,
+    model_checkpoint_dir,
+    image_output_dir,
+    discriminator_learning_rate,
+    latent_dim,
+    gann_learning_rate
+):
+    # Resume prior run if appropriate
+    if resume == True and len(checkpoints) > 0:
+
+        print(f'Resuming run from {resume_run_date}')
+
+        # Get last checkpoint file
+        last_checkpoint = str(checkpoints[-1])
+
+        # Parse step number from filename
+        last_checkpoint=int(last_checkpoint.split('generator_model_f')[-1])
+        print(f'Last checkpoint step: {last_checkpoint}')
+
+        # Load up the discriminator and generator
+        discriminator_model=tf.keras.models.load_model(
+            f'{model_checkpoint_dir}/discriminator_model_f{last_checkpoint:07d}')
+        generator_model=tf.keras.models.load_model(
+            f'{model_checkpoint_dir}/generator_model_f{last_checkpoint:07d}')
+
+        # Read the latent points from the last run
+        with open(f'{image_output_dir}/latent_points.pkl', 'rb') as f:
+            latent_points=pickle.load(f)
+
+        # Resume the frame number
+        frame=last_checkpoint
+
+    # If we are explicitly not resuming or we don't have any checkpoints to resume
+    # from, build the models fresh
+    elif resume == False or len(checkpoints) == 0:
+
+        print(f'Starting new run')
+
+        # Create the models
+        discriminator_model=models.define_discriminator(discriminator_learning_rate)
+        generator_model=models.define_generator(latent_dim)
+
+        # Make static set of points in latent space to generate
+        # sample images from. Save these for later incase we need
+        # to stop and restart training.
+        latent_points=training_funcs.generate_latent_points(latent_dim, 9)
+
+        with open(f'{image_output_dir}/latent_points.pkl', 'wb') as f:
+            pickle.dump(latent_points, f)
+
+        # Set the starting frame number
+        frame=1
+
+    # Build the GANN
+    gann_model=models.define_gan(
+        generator_model,
+        discriminator_model,
+        gann_learning_rate
+    )
+
+    return [latent_points, frame, discriminator_model, generator_model, gann_model]
+
+
+# use the generator to generate n fake examples, with class labels
 
 def generate_fake_samples(g_model, latent_dim, n_samples):
     # generate points in latent space
@@ -27,8 +99,8 @@ def generate_fake_samples(g_model, latent_dim, n_samples):
     y = zeros((n_samples, 1))
     return X, y
 
-# save 3x3 grid of generated images
 
+# save 3x3 grid of generated images
 
 def save_frame(g_model, latent_points, frame, image_output_dir):
     # create images from latent points
@@ -60,8 +132,8 @@ def save_frame(g_model, latent_points, frame, image_output_dir):
 
     return frame
 
-# train the generator and discriminator
 
+# train the generator and discriminator
 
 def train(
     frame, 
@@ -120,6 +192,9 @@ def train(
             j += 1
         i += 1
 
+
+# Generates from model
+
 def generate_specimen(g_model, latent_dim):
     # generate point in latent space
     x_input = generate_latent_points(latent_dim, 1)
@@ -127,6 +202,8 @@ def generate_specimen(g_model, latent_dim):
     X = g_model.predict(x_input)
     return X
 
+
+# Generates and saves model output
 
 def save_specimen(g_model, latent_dim, filename):
 
