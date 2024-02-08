@@ -6,8 +6,9 @@ Need to install TensorFlow with GPU support which depends on CUDA and cuDNN. Ver
 
 1. Base system configuration
 2. cuDNN installation
-3. tensorflow installation
-4. Additional GOTCHYAs
+3. TensorFlow installation
+4. Additional TensorFlow GOTCHYAs
+5. Bind mount fast scratch
 
 ## 1. Base system configuration
 
@@ -75,6 +76,8 @@ Then add to LD_LIBRARY_PATH
 [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:1', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:2', device_type='GPU')]
 ```
 
+Make updates to LD_LIBRARY_PATH by adding the exports to *.venv/bin/activate* so the path gets set whenever the virtual environment is activated.
+
 Holy crap, it worked! Ok, now we just need matplotlib:
 
 ```text
@@ -117,4 +120,13 @@ OK, I think that's it - turning warnings off via train.sh:
 
 ```text
 export TF_CPP_MIN_LOG_LEVEL=2
+```
+
+## 5. Bind mount fast scratch
+
+We have a local NVMe SSD set-up as a fast scratch drive. Place all the data there and then use a bind mount to the project data directory. In */etc/fstab*:
+
+```text
+# Fast scratch bind mount for skylines project
+/mnt/fast_scratch/skylines /mnt/arkk/rpm/skylines/skylines/skylines/data none defaults,bind 0
 ```

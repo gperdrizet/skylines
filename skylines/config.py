@@ -28,13 +28,13 @@ if RESUME == True:
 elif RESUME == False:
     path_date = CURRENT_DATE
 
-IMAGE_DIR = f'{path}/image_datasets'
+IMAGE_DIR = f'{path}/data/image_datasets'
 RAW_IMAGE_DIR = f'{IMAGE_DIR}/raw_images'
 PROCESSED_IMAGE_DIR = f'{IMAGE_DIR}/training_images'
 TRAINING_IMAGE_DIR = PROCESSED_IMAGE_DIR
-MODEL_CHECKPOINT_DIR = f'{path}/training_checkpoints/{path_date}'
-SPECIMEN_DIR = f'{path}/specimens/{path_date}'
-IMAGE_OUTPUT_DIR = f'{path}/gan_output/{path_date}'
+MODEL_CHECKPOINT_DIR = f'{path}/data/training_checkpoints/{path_date}'
+SPECIMEN_DIR = f'{path}/data/specimens/{path_date}'
+IMAGE_OUTPUT_DIR = f'{path}/data/gan_output/{path_date}'
 
 
 ########################################################################
@@ -46,7 +46,7 @@ IMAGE_DIM = 1024
 SHUFFLE_BUFFER = 50
 
 ########################################################################
-# DC-GANN parameters ###################################################
+# dc-gann parameters ###################################################
 ########################################################################
 
 GPUS = [
