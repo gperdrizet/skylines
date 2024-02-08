@@ -10,7 +10,7 @@ CURRENT_DATE = datetime.today().strftime('%Y-%m-%d')
 ########################################################################
 
 RESUME = True
-RESUME_RUN_DATE = '2024-02-07'
+RESUME_RUN_DATE = '2024-02-08'
 
 ########################################################################
 # Paths and directories ################################################
@@ -51,7 +51,7 @@ SHUFFLE_BUFFER = 50
 
 GPUS = [
     '/job:localhost/replica:0/task:0/device:GPU:0',
-    '/job:localhost/replica:0/task:0/device:GPU:1',
+    '/job:localhost/replica:0/task:0/device:GPU:1'
 ]
 
 GPU_PARALLELISM = 'central storage'
@@ -62,4 +62,4 @@ GAN_LEARNING_RATE = 0.00005
 BATCH_SIZE = int(2 * len(GPUS))
 EPOCHS = 100000
 
-CHECKPOINT_SAVE_FREQUENCY = 50
+CHECKPOINT_SAVE_FREQUENCY = 5

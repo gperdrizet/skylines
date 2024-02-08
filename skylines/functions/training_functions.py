@@ -91,14 +91,14 @@ def train(
             # get randomly selected 'real' samples
             X_real = iterator.get_next()
             y_real = ones((n_batch, 1))
-            # train descriminator on real samples
+            # train discriminator on real samples
             d_loss1, _ = d_model.train_on_batch(X_real, y_real)
 
             # generate 'fake' examples
             X_fake, y_fake = generate_fake_samples(
                 g_model, latent_dim, n_batch)
             X_fake = X_fake
-            # train descriminator on fake samples from generator
+            # train discriminator on fake samples from generator
             d_loss2, _ = d_model.train_on_batch(X_fake, y_fake)
 
             # prepare points in latent space as input for the generator
@@ -114,15 +114,8 @@ def train(
             frame = save_frame(g_model, latent_points, frame, image_output_dir)
 
             if frame % checkpoint_save_frequency == 0:
-                # filename = './training_checkpoints/generator_model_f%07d.h5' % (
-                #     frame)
-                g_model.save(f'{model_checkpoint_dir}/generator_model_f{frame:07d}.h5')
-                # filename = './training_checkpoints/discriminator_model_f%07d.h5' % (
-                #     frame)
-                d_model.save(f'{model_checkpoint_dir}/discriminator_model_f{frame:07d}.h5')
-                # filename = './training_checkpoints/gan_model_f%07d.h5' % (
-                #     frame)
-                gan_model.save(f'{model_checkpoint_dir}/gann_model_f{frame:07d}.h5')
+                g_model.save(f'{model_checkpoint_dir}/generator_model_f{frame:07d}')
+                d_model.save(f'{model_checkpoint_dir}/discriminator_model_f{frame:07d}')
 
             j += 1
         i += 1

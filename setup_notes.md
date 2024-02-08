@@ -76,7 +76,13 @@ Then add to LD_LIBRARY_PATH
 [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:1', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:2', device_type='GPU')]
 ```
 
-Make updates to LD_LIBRARY_PATH by adding the exports to *.venv/bin/activate* so the path gets set whenever the virtual environment is activated.
+Made changes to environment 'persistent' by adding the following to the runner script *train.sh*:
+
+```text
+# Set LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/mnt/arkk/rpm/skylines/skylines/.venv/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/mnt/arkk/rpm/skylines/skylines/.venv/lib/python3.8/site-packages/tensorrt/
+```
 
 Holy crap, it worked! Ok, now we just need matplotlib:
 
@@ -99,6 +105,14 @@ Lambda fuctions will be no more assumed to be used in the statement where they a
 (typo not mine.)
 
 Not a big deal. See [here](https://github.com/tensorflow/tensorflow/issues/56089) and [here](https://github.com/tensorflow/tensorflow/commit/6197fa37555b710a35e84c1b8e1aab2bcce9d46b). I think if we were using a more current TensorFlow, we wouldn't be seeing this.
+
+To get rid of the warning, needed to set:
+
+```text
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
+```
+
+In *dc-gann.py*.
 
 ### 4.2. learning_rate
 
@@ -124,9 +138,9 @@ export TF_CPP_MIN_LOG_LEVEL=2
 
 ## 5. Bind mount fast scratch
 
-We have a local NVMe SSD set-up as a fast scratch drive. Place all the data there and then use a bind mount to the project data directory. In */etc/fstab*:
+This one is pretty specific to our hardware configuration, but might be useful to others. Leaving it here as reference. We have a local NVMe SSD set-up as a fast scratch drive. Place all the data there and then use a bind mount to the project data directory. In */etc/fstab*:
 
 ```text
 # Fast scratch bind mount for skylines project
-/mnt/fast_scratch/skylines /mnt/arkk/rpm/skylines/skylines/skylines/data none defaults,bind 0
+/mnt/fast_scratch/skylines /mnt/arkk/rpm/skylines/skylines/skylines/data none x-systemd.requires=/mnt/fast_scratch,x-systemd.requires=/mnt/arkk,x-systemd.automount,bind 0 0
 ```

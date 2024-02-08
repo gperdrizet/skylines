@@ -2,7 +2,11 @@
 
 # Convenience script to start DC-GANN training run. 
 # Sets some environment variables. See skylines/config.py for
-# additional run options
+# additional run options.
+
+# Set LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=`pwd`/.venv/lib/
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/.venv/lib/python3.8/site-packages/tensorrt/
 
 # Increase tcmalloc report threshold to 36 GB
 export TCMALLOC_LARGE_ALLOC_REPORT_THRESHOLD=38654705664
@@ -12,7 +16,6 @@ export TCMALLOC_LARGE_ALLOC_REPORT_THRESHOLD=38654705664
 # 1 - filter out INFO logs 
 # 2 - filter out WARNING logs
 # 3 - filter out ERROR logs
-
 export TF_CPP_MIN_LOG_LEVEL=2
 
 # Set visible GPUs

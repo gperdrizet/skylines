@@ -3,17 +3,21 @@ import shutil
 import pathlib
 import tensorflow as tf
 
-def prep_output_dir(output_path):
+def prep_output_dir(output_path, resume):
 
     # Check if the directory exists
     if pathlib.Path(output_path).is_dir():
 
-        # It already exists, so empty it
-        print(f'Emptying {output_path}')
+        # It already exists, so empty it if we are not resuming
+        if resume == False:
+            for filename in os.listdir(output_path):
+                file_path = os.path.join(output_path, filename)
 
-        for filename in os.listdir(output_path):
-            file_path = os.path.join(output_path, filename)
-            os.unlink(file_path)
+                if os.path.isfile(file_path) or os.path.islink(file_path):
+                    os.unlink(file_path)
+                    
+                elif os.path.isdir(file_path):
+                    shutil.rmtree(file_path)
 
     else:
 
