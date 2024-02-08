@@ -1,8 +1,17 @@
-# Setup notes - 2024-02-07
+# 2024-02-08 setup notes
 
 Need to install TensorFlow with GPU support which depends on CUDA and cuDNN. Versioning really matters here.
 
-## 1. Base system
+## Contents
+
+1. Base system configuration
+2. cuDNN installation
+3. tensorflow installation
+4. Additional GOTCHYAs
+
+## 1. Base system configuration
+
+Here is what we are starting with:
 
 - Python: 3.8.10
 - GPU: Tesla K80
@@ -12,11 +21,11 @@ Need to install TensorFlow with GPU support which depends on CUDA and cuDNN. Ver
 - CUDA compute capability: 3.7
 - GCC 9.4.0
 
-It looks like there never was a TensorFlow version released for CUDA 11.4 (see [here](https://www.tensorflow.org/install/source#gpu)). According to [this issue](https://github.com/tensorflow/tensorflow/issues/55492) on GitHub, TensorFlow for CUDA 11.2 should work with CUDA 11.4. The thread mentions using TensorFlow-2.8.0 for CUDA 11.4 - which was the most current version at the time of the posts. But, since our GCC is already version 9.4 TensorFlow 2.9.0 - 2.11.0 are the closest matches for us, differing only in the required Bazel version. I believe that Bazel is only needed to compile from source, so I don't think it matters. The only other prerequisite we need is the same for all three TensorFlow version: cuDNN 8.1.
+It looks like there never was a TensorFlow version released for CUDA 11.4 (see [here](https://www.tensorflow.org/install/source#gpu)). According to [this issue](https://github.com/tensorflow/tensorflow/issues/55492) on GitHub, TensorFlow for CUDA 11.2 should work with CUDA 11.4. The thread mentions using TensorFlow-2.8.0 (which was the most current version at the time of the posts) for CUDA 11.4. But, since our GCC is already version 9.4, TensorFlow 2.9.0 - 2.11.0 are the closest matches for us. I believe Bazel is only needed to compile from source an we aren't planning on doing that. The only other prerequisite we need is the same for all three TensorFlow versions of interest: cuDNN 8.1.
 
 ## 2. cuDNN installation
 
-Official install instructions available from the [Nvidia archives](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-810/install-guide/index.html). Taking a look at the CUDA compatibility matrix linked on that site, seems like they recommend CUDA 11.8 with cuDNN 9.0.0 for older cards. Unfortunately, we have CUDA 11.4 installed because I could not get 11.8 to install without also pulling in a later driver (>500) and borking the system. Maybe it's time to revisit that - the [compatibility matrix](https://docs.nvidia.com/deeplearning/cudnn/reference/support-matrix.html) says CUDA 11.8, cuDNN 9.0.0 and driver >= 450 is the best setup. The latest driver for our K80 is 470, so it seems like it should work. But, in order to avoid reinstalling the whole GPU stack from scratch, let's just stick with the original plan for now and install cuDNN 8.1 as required by TensorFlow.
+Official install instructions are available from the [Nvidia archives](https://docs.nvidia.com/deeplearning/cudnn/archives/cudnn-810/install-guide/index.html). Taking a look at the CUDA compatibility matrix linked on that site, it seems like the recommend configuration for older cards is CUDA 11.8 with cuDNN 9.0.0. Unfortunately, we have only have CUDA 11.4 installed. I could not get 11.8 to install without also pulling in a later, incompatible driver (>500) and borking the system. Maybe it's time to revisit that - the [compatibility matrix](https://docs.nvidia.com/deeplearning/cudnn/reference/support-matrix.html) says CUDA 11.8, cuDNN 9.0.0 and driver >= 450 is the best setup. The latest driver for our K80 is 470, so it seems like the recommended setup should should work. But, in order to avoid reinstalling the whole GPU stack from scratch, let's just stick with the original plan for now and install cuDNN 8.1 as required by TensorFlow.
 
 ```text
 sudo cp ./cuda/include/cudnn*.h /usr/local/cuda/include/
@@ -24,7 +33,9 @@ sudo cp -P ./cuda/lib64/libcudnn* /usr/local/cuda/lib64/
 sudo chmod a+r /usr/local/cuda/include/cudnn*.h /usr/local/cuda/lib64/libcudnn*
 ```
 
-## 3. Install TensorFlow in venv
+## 3. TensorFlow installation
+
+Next, let's install TensorFlow-2.11.0 because it's the latest version which has a chance of being compatible with our CUDA 11.4.
 
 Make and activate a python 3.8 venv:
 
@@ -33,7 +44,7 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-Then install and text Tensorflow 2.11.0:
+Then install and test Tensorflow 2.11.0:
 
 ```text
 (.venv)$ pip install tensorflow==2.11.0
@@ -48,7 +59,7 @@ Skipping registering GPU devices...
 []
 ```
 
-OK, still not working. Reading here - seems like most of these errors and warnings are related to tensorrt. See [here](https://stackoverflow.com/questions/74956134/could-not-load-dynamic-library-libnvinfer-so-7) and [here](https://github.com/tensorflow/tensorflow/issues/57679#issuecomment-1249197802). A quick look inside our venv tells me that we have libnvinfer.so.8 not libnvinfer.so.7. Following the comment in the GitHub issue, let's install the correct version of tensorrt:
+OK, still not working. Seems like most of these errors and warnings are related to tensorrt. See [here](https://stackoverflow.com/questions/74956134/could-not-load-dynamic-library-libnvinfer-so-7) and [here](https://github.com/tensorflow/tensorflow/issues/57679#issuecomment-1249197802). A quick look inside our venv tells me that we have libnvinfer.so.8 not libnvinfer.so.7 etc. Following the comment in the GitHub issue, let's install the correct version of tensorrt:
 
 ```text
 (.venv)$ pip install nvidia-tensorrt==7.2.3.4
@@ -64,7 +75,7 @@ Then add to LD_LIBRARY_PATH
 [PhysicalDevice(name='/physical_device:GPU:0', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:1', device_type='GPU'), PhysicalDevice(name='/physical_device:GPU:2', device_type='GPU')]
 ```
 
-Holy crap, it worked. Ok, now we just need matplotlib:
+Holy crap, it worked! Ok, now we just need matplotlib:
 
 ```text
 pip install matplotlib
@@ -100,7 +111,7 @@ Easy enough.
 W tensorflow/core/grappler/optimizers/data/auto_shard.cc:784] AUTO sharding policy will apply DATA sharding policy as it failed to apply FILE sharding policy because of the following reason: Found an unshardable source dataset: name: "TensorDataset/_2"
 ```
 
-Couldn't find a good solution for this one - luckily, it's just a warning and the model seems to train just fine anyway, though we might be leaving performance on the table. Couple of notes - first, seems like maybe it's not shardable because it's not 'file based' i.e. our data is not in chunks that can be split up. Instead each file is a single image. Secondly, according to [this](https://github.com/tensorflow/tensorflow/issues/45157) we don't need to autoshard with a single machine using MirroredStrategy, it's meant for MultiWorkerMirroredStrategy across nodes. Lastly, I tried setting the autoshard policy to DATA or OFF from the get-go, but we still see the warning. Think we need to just ignore it and move on.
+Couldn't find a good solution for this one - luckily, it's just a warning and the model seems to train just fine anyway, though we might be leaving performance on the table. Couple of notes - first, seems like maybe it's not a shardable dataset because it's not 'file based' i.e. our data is not in chunks that can be split up. Instead, each file is a single image. Secondly, according to [this](https://github.com/tensorflow/tensorflow/issues/45157) we don't need to autoshard with a single machine using MirroredStrategy, it's meant for MultiWorkerMirroredStrategy across nodes. Lastly, I tried setting the autoshard policy to DATA or OFF from the get-go, but we still see the warning. Think we need to just ignore it and move on.
 
 OK, I think that's it - turning warnings off via train.sh:
 
