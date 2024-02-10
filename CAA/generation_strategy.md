@@ -16,3 +16,5 @@ Training was conducted via generative adversarial strategy. Two models were cons
 2. The output image is given to the discriminator which scores how likely the generated image is to have come from the 'real' city skylines image set.
 3. The discriminator's neural net is updated to give better answers - i.e. it is penalized for being wrong and rewarded for being right.
 4. The generator's neural net is updated to make better fakes - i.e. if the discriminator was 'fooled' by the generated image the generator is rewarded and if not, it is penalized.
+
+The result is a very large and complex equation which takes a list of 100 numbers and does calculations on them to generate three new sets of 1024 x 1024 numbers. The resulting sets of numbers resemble a city skyline when formatted and displayed as an RGB image.
