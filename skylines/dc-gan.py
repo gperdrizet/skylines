@@ -19,14 +19,14 @@ if __name__ == '__main__':
     _=data_funcs.prep_output_dir(config.IMAGE_OUTPUT_DIR, config.RESUME)
 
     # Make TensorFlow dataset from image data
-    train_ds, image_count = data_funcs.prep_data(
+    train_ds, image_count=data_funcs.prep_data(
         config.TRAINING_IMAGE_DIR,
         config.BATCH_SIZE,
         config.IMAGE_DIM
     )
 
     # Get saved checkpoints, if any:
-    checkpoints = list(pathlib.Path(config.MODEL_CHECKPOINT_DIR).glob('generator_model_f*'))
+    checkpoints=list(pathlib.Path(config.MODEL_CHECKPOINT_DIR).glob('generator_model_f*'))
 
     # Check available GPUs
     print("Num GPUs Available:", len(

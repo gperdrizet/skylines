@@ -1,4 +1,5 @@
 import pickle
+import numpy as np
 from numpy import zeros
 from numpy import ones
 from numpy.random import randn
@@ -6,6 +7,8 @@ import matplotlib.pyplot as plt
 import functions.model_definitions as models
 import functions.training_functions as training_funcs
 import tensorflow as tf
+
+np.set_printoptions(threshold=np.inf)
 
 
 # generate points in latent space as input for the generator
@@ -200,14 +203,58 @@ def generate_specimen(g_model, latent_dim):
     x_input = generate_latent_points(latent_dim, 1)
     # predict outputs
     X = g_model.predict(x_input)
-    return X
+
+    return x_input, X
 
 
-# Generates and saves model output
+# Generates and saves model output and latent points
 
 def save_specimen(g_model, latent_dim, filename):
 
-    specimen = generate_specimen(g_model, latent_dim, )
+    # Get image and latent points
+    latent_points, specimen = generate_specimen(g_model, latent_dim)
+
+    # Normalize
     specimen = (specimen + 1.0) / 2.0
 
-    plt.imsave(filename, specimen[0])
+    # Plot and save image
+    image_filename = f'{filename}.jpg'
+    plt.imsave(image_filename, specimen[0])
+
+    # Save latent points
+    latent_points = np.reshape(latent_points, (10,10))
+
+    with open(f'{filename}_laten_points.dat', 'w') as output:
+        for row in latent_points:
+
+            formatted_row = []
+
+            for i in row:
+                formatted_row.append((f'{i:.4f}').rjust(7))
+
+            formatted_row = ','.join(formatted_row)
+            output.write(f'{formatted_row}\n')
+
+    # Save raw image data
+    specimen = np.transpose(specimen[0], (2, 0, 1))
+
+    with open(f'{filename}_gan_output.dat', 'w') as output:
+        for channel in specimen:
+
+            for row in channel:
+
+                formatted_row = []
+
+                for i in row:
+                    formatted_row.append(f'{i:.4f}')
+
+                formatted_row = ','.join(formatted_row)
+                output.write(f'{formatted_row}\n')
+
+            output.write('\n')
+
+    #     output.write('\n')
+    #     str_specimen = str_specimen + '\n' + channel
+
+    # with open(f'{filename}_gan_output.dat', 'w') as output:
+    #     output.write(str_specimen)

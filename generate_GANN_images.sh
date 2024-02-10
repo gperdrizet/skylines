@@ -3,7 +3,8 @@
 # Convenience script to generate images from a trained model
 
 # Which model to use/how many images to make
-MODEL_CHECKPOINT=165
+RUN_DATE='2022-03-23'
+MODEL_CHECKPOINT=20500
 NUM_IMAGES=10
 
 # Set LD_LIBRARY_PATH
@@ -27,4 +28,4 @@ export CUDA_VISIBLE_DEVICES=0
 export TF_FORCE_GPU_ALLOW_GROWTH=false
 
 # Make images
-python ./skylines/generate.py $MODEL_CHECKPOINT $NUM_IMAGES
+python ./skylines/generate.py $RUN_DATE $MODEL_CHECKPOINT $NUM_IMAGES

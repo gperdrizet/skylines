@@ -9,7 +9,7 @@ CURRENT_DATE = datetime.today().strftime('%Y-%m-%d')
 # Option to resume a training run ######################################
 ########################################################################
 
-RESUME = True
+RESUME = False
 RESUME_RUN_DATE = '2024-02-08'
 
 ########################################################################
@@ -56,10 +56,10 @@ GPUS = [
 
 GPU_PARALLELISM = 'central storage'
 LATENT_DIM = 100
-DISCRIMINATOR_LEARNING_RATE = 0.00005
-GENERATOR_LEARNING_RATE = 0.00005
-GANN_LEARNING_RATE = 0.00005
-BATCH_SIZE = 1 #int(2 * len(GPUS))
+DISCRIMINATOR_LEARNING_RATE = 0.0001 #0.00005
+GENERATOR_LEARNING_RATE = 0.0001 #0.00005
+GANN_LEARNING_RATE = 0.0001 #0.00005
+BATCH_SIZE = int(2 * len(GPUS))
 EPOCHS = 100000
 
 CHECKPOINT_SAVE_FREQUENCY = 5
