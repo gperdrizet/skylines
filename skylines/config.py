@@ -10,7 +10,7 @@ CURRENT_DATE = datetime.today().strftime('%Y-%m-%d')
 ########################################################################
 
 RESUME = False
-RESUME_RUN_DATE = '2024-02-08'
+RESUME_RUN_DATE = '2024-02-09'
 
 ########################################################################
 # Paths and directories ################################################
@@ -56,10 +56,10 @@ GPUS = [
 
 GPU_PARALLELISM = 'central storage'
 LATENT_DIM = 100
-DISCRIMINATOR_LEARNING_RATE = 0.0001 #0.00005
-GENERATOR_LEARNING_RATE = 0.0001 #0.00005
-GANN_LEARNING_RATE = 0.0001 #0.00005
-BATCH_SIZE = int(2 * len(GPUS))
+DISCRIMINATOR_LEARNING_RATE = 0.000025 #0.00005
+GENERATOR_LEARNING_RATE = 0.000025 #0.00005
+GANN_LEARNING_RATE = 0.000025 #0.00005
+BATCH_SIZE = int(3 * len(GPUS))
 EPOCHS = 100000
 
-CHECKPOINT_SAVE_FREQUENCY = 5
+CHECKPOINT_SAVE_FREQUENCY = 1

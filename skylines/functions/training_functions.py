@@ -221,10 +221,14 @@ def save_specimen(g_model, latent_dim, filename):
     image_filename = f'{filename}.jpg'
     plt.imsave(image_filename, specimen[0])
 
-    # Save latent points
+    # Save latent points as pickle for re-use
+    with open(f'{filename}_latent_points.pkl', 'wb') as output:
+        pickle.dump(latent_points, output)
+
+    # Format and save latent points as text
     latent_points = np.reshape(latent_points, (10,10))
 
-    with open(f'{filename}_laten_points.dat', 'w') as output:
+    with open(f'{filename}_latent_points.dat', 'w') as output:
         for row in latent_points:
 
             formatted_row = []
@@ -253,8 +257,17 @@ def save_specimen(g_model, latent_dim, filename):
 
             output.write('\n')
 
-    #     output.write('\n')
-    #     str_specimen = str_specimen + '\n' + channel
 
-    # with open(f'{filename}_gan_output.dat', 'w') as output:
-    #     output.write(str_specimen)
+# Takes a model and a latent point, saves the model output
+
+def save_specimen_from_latent_point(g_model, latent_point, filename):
+
+    # Generate
+    specimen = g_model.predict(latent_point)
+
+    # Normalize
+    specimen = (specimen + 1.0) / 2.0
+
+    # Plot and save image
+    image_filename = f'{filename}.jpg'
+    plt.imsave(image_filename, specimen[0])
