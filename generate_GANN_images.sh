@@ -3,8 +3,8 @@
 # Convenience script to generate images from a trained model
 
 # Which model to use/how many images to make
-RUN_DATE='2022-03-24'
-MODEL_CHECKPOINT=11500
+RUN_DATE='2024-02-11'
+MODEL_CHECKPOINT=5695
 NUM_IMAGES=20
 
 # Set LD_LIBRARY_PATH

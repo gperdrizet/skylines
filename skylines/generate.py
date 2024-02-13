@@ -15,7 +15,7 @@ if __name__ == '__main__':
     with tf.device('/gpu:0'):
 
         # load model from checkpoint
-        model_checkpoint = f'{config.path}/data/training_checkpoints/{run_date}/generator_model_f{checkpoint:07d}.h5'
+        model_checkpoint = f'{config.path}/data/training_checkpoints/{run_date}/generator_model_f{checkpoint:07d}'
         generator_model = tf.keras.models.load_model(model_checkpoint)
 
         # Check its architecture

@@ -4,8 +4,8 @@
 # from model checkpoints and latent point
 
 # Which run date and specimen to use
-RUN_DATE='2022-03-24'
-SPECIMEN_LATEN_POINTS='11500.1_latent_points.pkl'
+RUN_DATE='2024-02-11'
+SPECIMEN_LATEN_POINTS='5695.3_latent_points.pkl'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/

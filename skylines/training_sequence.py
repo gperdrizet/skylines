@@ -50,10 +50,13 @@ if __name__ == '__main__':
     # Assign to CPU incase another training run is going in the background
     with tf.device('/CPU:0'):
 
-        frame = 0
-
         model_checkpoint_dir = f'{conf.path}/data/training_checkpoints/{run_date}/'
-        models = [f for f in listdir(model_checkpoint_dir) if isfile(join(model_checkpoint_dir, f))]
+        models = [f for f in listdir(model_checkpoint_dir) if 'generator' in f] #if isfile(join(model_checkpoint_dir, f))]
+        
+        print(f'Loaded {len(models)} model paths at {model_checkpoint_dir}')
+        print(f'Starting frame generation')
+
+        frame = 0
 
         for model in sorted(models):
 
