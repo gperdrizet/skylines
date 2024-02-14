@@ -13,6 +13,10 @@ absl.logging.set_verbosity(absl.logging.ERROR)
 
 if __name__ == '__main__':
 
+    # Check available GPUs
+    print("Num GPUs Available:", len(
+        tf.config.experimental.list_physical_devices('GPU')))
+
     # Create or clear output directories as appropriate
     _=data_funcs.prep_output_dir(config.MODEL_CHECKPOINT_DIR, config.RESUME)
     _=data_funcs.prep_output_dir(config.SPECIMEN_DIR, config.RESUME)
@@ -28,9 +32,8 @@ if __name__ == '__main__':
     # Get saved checkpoints, if any:
     checkpoints=list(pathlib.Path(config.MODEL_CHECKPOINT_DIR).glob('generator_model_f*'))
 
-    # Check available GPUs
-    print("Num GPUs Available:", len(
-        tf.config.experimental.list_physical_devices('GPU')))
+    # Discard the last saved checkpoint because one of the models may have an incomplete save
+    checkpoints=checkpoints[:-1]
     
     # If we only have one GPU or are explicitly not using parallelism, prep the models
     # outside of a tf.distribute strategy
@@ -94,5 +97,7 @@ if __name__ == '__main__':
         config.MODEL_CHECKPOINT_DIR,
         config.CHECKPOINT_SAVE_FREQUENCY,
         config.PROJECT_NAME,
-        config.IMAGE_OUTPUT_DIR
+        config.IMAGE_OUTPUT_DIR,
+        config.BENCHMARK_DATA_DIR,
+        config.GPU_PARALLELISM
     )

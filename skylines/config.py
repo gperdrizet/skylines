@@ -9,8 +9,8 @@ CURRENT_DATE = datetime.today().strftime('%Y-%m-%d')
 # Option to resume a training run ######################################
 ########################################################################
 
-RESUME = False
-RESUME_RUN_DATE = '2024-02-09'
+RESUME = True
+RESUME_RUN_DATE = '2024-02-11'
 
 ########################################################################
 # Paths and directories ################################################
@@ -35,6 +35,7 @@ TRAINING_IMAGE_DIR = PROCESSED_IMAGE_DIR
 MODEL_CHECKPOINT_DIR = f'{path}/data/training_checkpoints/{path_date}'
 SPECIMEN_DIR = f'{path}/data/specimens/{path_date}'
 IMAGE_OUTPUT_DIR = f'{path}/data/gan_output/{path_date}'
+BENCHMARK_DATA_DIR = f'{path}/benchmarking'
 
 
 ########################################################################
