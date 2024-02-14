@@ -11,10 +11,10 @@ SPECIMEN_LATEN_POINTS='5695.3_latent_points.pkl'
 RESUME='True'
 
 # Frame number to resume from. Is used as index of model in model 
-# path lists and number used for frame output. This alows the 
+# paths list and number for frame output. This alows the 
 # generation of squentialy numbered frames from non-sequential
 # model snapshots
-RESUME_FRAME='627'
+RESUME_FRAME='1781'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
