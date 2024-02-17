@@ -4,6 +4,9 @@
 # Sets some environment variables. See skylines/config.py for
 # additional run options.
 
+RESUME=True
+RESUME_RUN_DATE='2024-02-11'
+
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:`pwd`/.venv/lib/python3.8/site-packages/tensorrt/
@@ -25,4 +28,4 @@ export CUDA_VISIBLE_DEVICES=1,2
 export TF_FORCE_GPU_ALLOW_GROWTH=false
 
 # Start GANN training run
-python ./skylines/train.py
+python ./skylines/train.py $RESUME $RESUME_RUN_DATE

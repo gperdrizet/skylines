@@ -1,3 +1,4 @@
+import sys
 import config
 import pickle
 import pathlib
@@ -13,14 +14,19 @@ absl.logging.set_verbosity(absl.logging.ERROR)
 
 if __name__ == '__main__':
 
+    # collect command line arguments
+    args=sys.argv[1:]
+    resume=str(args[0])
+    resume_run_date=str(args[1])
+
     # Check available GPUs
     print("Num GPUs Available:", len(
         tf.config.experimental.list_physical_devices('GPU')))
 
     # Create or clear output directories as appropriate
-    _=data_funcs.prep_output_dir(config.MODEL_CHECKPOINT_DIR, config.RESUME)
-    _=data_funcs.prep_output_dir(config.SPECIMEN_DIR, config.RESUME)
-    _=data_funcs.prep_output_dir(config.IMAGE_OUTPUT_DIR, config.RESUME)
+    _=data_funcs.prep_output_dir(config.MODEL_CHECKPOINT_DIR, resume)
+    _=data_funcs.prep_output_dir(config.SPECIMEN_DIR, resume)
+    _=data_funcs.prep_output_dir(config.IMAGE_OUTPUT_DIR, resume)
 
     # Make TensorFlow dataset from image data
     train_ds, image_count=data_funcs.prep_data(
@@ -44,9 +50,9 @@ if __name__ == '__main__':
         print('Running on single GPU')
 
         result=training_funcs.prepare_models(
-                config.RESUME,
+                resume,
                 checkpoints,
-                config.RESUME_RUN_DATE,
+                resume_run_date,
                 config.MODEL_CHECKPOINT_DIR,
                 config.IMAGE_OUTPUT_DIR,
                 config.GENERATOR_LEARNING_RATE,
@@ -67,9 +73,9 @@ if __name__ == '__main__':
         
         with strategy.scope():
             result=training_funcs.prepare_models(
-                    config.RESUME,
+                    resume,
                     checkpoints,
-                    config.RESUME_RUN_DATE,
+                    resume_run_date,
                     config.MODEL_CHECKPOINT_DIR,
                     config.IMAGE_OUTPUT_DIR,
                     config.GENERATOR_LEARNING_RATE,

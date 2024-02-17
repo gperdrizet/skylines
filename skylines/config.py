@@ -1,16 +1,17 @@
 import os
 from datetime import datetime
 
+# Notes:
+#
+# For 2024-02-11 run, learning rate was initially set at 0.000025. 
+# At 7000 batches the learning rate was manually updated to 0.00001.
+# The learning rate was updated again at around 7800 batches to 
+# 0.0001 because the models had failed to progress visually. 
+# Prior archived runs used 0.0001 with good results.
+
 # Project name and run date
 PROJECT_NAME='skylines'
 CURRENT_DATE=datetime.today().strftime('%Y-%m-%d')
-
-########################################################################
-# Option to resume a training run ######################################
-########################################################################
-
-RESUME=True
-RESUME_RUN_DATE='2024-02-11'
 
 ########################################################################
 # Paths and directories ################################################
@@ -57,9 +58,9 @@ GPUS=[
 
 GPU_PARALLELISM='central storage'
 LATENT_DIM=100
-DISCRIMINATOR_LEARNING_RATE=0.00001 #0.00005
-GENERATOR_LEARNING_RATE=0.00001 #0.00005
-GANN_LEARNING_RATE=0.00001 #0.00005
+DISCRIMINATOR_LEARNING_RATE=0.0001 #0.00005
+GENERATOR_LEARNING_RATE=0.0001 #0.00005
+GANN_LEARNING_RATE=0.0001 #0.00005
 BATCH_SIZE=int(3 * len(GPUS))
 EPOCHS=100000
 
