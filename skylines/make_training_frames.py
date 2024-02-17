@@ -74,7 +74,7 @@ if __name__ == '__main__':
 
             # generate image
             filename=f'{output_path}/{frame}'
-            training_funcs.save_specimen_from_latent_point(generator_model, latent_point, filename)
+            _=training_funcs.save_specimen_from_latent_point(generator_model, latent_point, filename)
 
             # Step frame number
             frame+=1
