@@ -23,7 +23,7 @@ def prep_output_dir(output_path, resume):
 
         # It doesn't exist, so create it
         print(f'Creating {output_path}')
-        pathlib.Path(output_path).mkdir()
+        pathlib.Path(output_path).mkdir(parents=True)
 
     return True
 

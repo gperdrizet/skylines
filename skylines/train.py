@@ -1,10 +1,8 @@
 import sys
 import config
-import pickle
 import pathlib
 import tensorflow as tf
 import functions.data_functions as data_funcs
-import functions.model_definitions as models
 import functions.training_functions as training_funcs
 import absl.logging
 
@@ -19,14 +17,25 @@ if __name__ == '__main__':
     resume=str(args[0])
     resume_run_date=str(args[1])
 
+    if resume == 'True':
+        path_date=resume_run_date
+
+    elif resume == 'False':
+        path_date=config.CURRENT_DATE
+        
     # Check available GPUs
     print("Num GPUs Available:", len(
         tf.config.experimental.list_physical_devices('GPU')))
 
+    # Construct paths for run
+    model_checkpoint_dir=f'{config.PATH}/data/{path_date}/training_checkpoints'
+    specimen_dir=f'{config.PATH}/data/{path_date}/specimens'
+    image_output_dir=f'{config.PATH}/data/{path_date}/gan_output'
+
     # Create or clear output directories as appropriate
-    _=data_funcs.prep_output_dir(config.MODEL_CHECKPOINT_DIR, resume)
-    _=data_funcs.prep_output_dir(config.SPECIMEN_DIR, resume)
-    _=data_funcs.prep_output_dir(config.IMAGE_OUTPUT_DIR, resume)
+    _=data_funcs.prep_output_dir(model_checkpoint_dir, resume)
+    _=data_funcs.prep_output_dir(specimen_dir, resume)
+    _=data_funcs.prep_output_dir(image_output_dir, resume)
 
     # Make TensorFlow dataset from image data
     train_ds, image_count=data_funcs.prep_data(
@@ -36,7 +45,7 @@ if __name__ == '__main__':
     )
 
     # Get saved checkpoints, if any:
-    checkpoints=list(pathlib.Path(config.MODEL_CHECKPOINT_DIR).glob('generator_model_f*'))
+    checkpoints=list(pathlib.Path(model_checkpoint_dir).glob('generator_model_f*'))
 
     # Discard the last saved checkpoint because one of the models may have an incomplete save
     checkpoints=checkpoints[:-1]
@@ -53,8 +62,8 @@ if __name__ == '__main__':
                 resume,
                 checkpoints,
                 resume_run_date,
-                config.MODEL_CHECKPOINT_DIR,
-                config.IMAGE_OUTPUT_DIR,
+                model_checkpoint_dir,
+                image_output_dir,
                 config.GENERATOR_LEARNING_RATE,
                 config.LATENT_DIM,
                 config.GANN_LEARNING_RATE
@@ -76,8 +85,8 @@ if __name__ == '__main__':
                     resume,
                     checkpoints,
                     resume_run_date,
-                    config.MODEL_CHECKPOINT_DIR,
-                    config.IMAGE_OUTPUT_DIR,
+                    model_checkpoint_dir,
+                    image_output_dir,
                     config.GENERATOR_LEARNING_RATE,
                     config.LATENT_DIM,
                     config.GANN_LEARNING_RATE
@@ -102,10 +111,10 @@ if __name__ == '__main__':
         image_count,
         config.EPOCHS,
         config.BATCH_SIZE,
-        config.MODEL_CHECKPOINT_DIR,
+        model_checkpoint_dir,
         config.CHECKPOINT_SAVE_FREQUENCY,
         config.PROJECT_NAME,
-        config.IMAGE_OUTPUT_DIR,
+        image_output_dir,
         config.BENCHMARK_DATA_DIR,
         config.GPU_PARALLELISM
     )

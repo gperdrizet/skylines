@@ -4,17 +4,17 @@
 # from model checkpoints and latent point
 
 # Which run date and specimen latent point to use
-RUN_DATE='2024-02-11'
-SPECIMEN_LATEN_POINTS='5695.3_latent_points.pkl'
+RUN_DATE='2024-02-17'
+SPECIMEN_LATEN_POINTS='30.2_latent_points.pkl'
 
 # Resume or add to a previous frame generation run
-RESUME='True'
+RESUME='False'
 
 # Frame number to resume from. Is used as index of model in model 
 # paths list and number for frame output. This alows the 
 # generation of squentialy numbered frames from non-sequential
 # model snapshots
-RESUME_FRAME='8087'
+RESUME_FRAME='0'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/

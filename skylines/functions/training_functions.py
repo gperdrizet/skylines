@@ -27,7 +27,7 @@ def prepare_models(
     gann_learning_rate
 ):
     # Resume prior run if appropriate
-    if resume == True and len(checkpoints) > 0:
+    if resume == 'True' and len(checkpoints) > 0:
 
         print(f'Resuming run from {resume_run_date}')
 
@@ -36,7 +36,7 @@ def prepare_models(
 
         # Parse step number from filename
         last_checkpoint=int(last_checkpoint.split('generator_model_f')[-1])
-        print(f'Last checkpoint step: {last_checkpoint}')
+        print(f'Last checkpoint step: {last_checkpoint}\n')
 
         # Load up the discriminator and generator
         discriminator_model=tf.keras.models.load_model(
@@ -53,9 +53,9 @@ def prepare_models(
 
     # If we are explicitly not resuming or we don't have any checkpoints to resume
     # from, build the models fresh
-    elif resume == False or len(checkpoints) == 0:
+    elif resume == 'False' or len(checkpoints) == 0:
 
-        print(f'Starting new run')
+        print(f'Starting new run\n')
 
         # Create the models
         discriminator_model=models.define_discriminator(discriminator_learning_rate)

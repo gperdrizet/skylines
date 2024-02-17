@@ -3,9 +3,9 @@
 # Convenience script to generate images from a trained model
 
 # Which model to use/how many images to make
-RUN_DATE='2024-02-11'
-MODEL_CHECKPOINT=5695
-NUM_IMAGES=20
+RUN_DATE='2024-02-17'
+MODEL_CHECKPOINT=30
+NUM_IMAGES=3
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/

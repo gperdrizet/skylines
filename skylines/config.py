@@ -1,15 +1,7 @@
 import os
 from datetime import datetime
 
-# Notes:
-#
-# For 2024-02-11 run, learning rate was initially set at 0.000025. 
-# At 7000 batches the learning rate was manually updated to 0.00001.
-# The learning rate was updated again at around 7800 batches to 
-# 0.0001 because the models had failed to progress visually. 
-# Prior archived runs used 0.0001 with good results.
-
-# Project name and run date
+# Project name
 PROJECT_NAME='skylines'
 CURRENT_DATE=datetime.today().strftime('%Y-%m-%d')
 
@@ -19,24 +11,16 @@ CURRENT_DATE=datetime.today().strftime('%Y-%m-%d')
 
 # Get path to this config file, we will use this
 # to define other paths to data files etc.
-path=os.path.dirname(os.path.realpath(__file__))
+PATH=os.path.dirname(os.path.realpath(__file__))
 
-# Use current date or resume data in file paths as needed
-
-if RESUME == True:
-    path_date=RESUME_RUN_DATE
-
-elif RESUME == False:
-    path_date=CURRENT_DATE
-
-IMAGE_DIR=f'{path}/data/image_datasets'
+IMAGE_DIR=f'{PATH}/data/image_datasets'
 RAW_IMAGE_DIR=f'{IMAGE_DIR}/raw_images'
 PROCESSED_IMAGE_DIR=f'{IMAGE_DIR}/training_images'
 TRAINING_IMAGE_DIR=PROCESSED_IMAGE_DIR
-MODEL_CHECKPOINT_DIR=f'{path}/data/training_checkpoints/{path_date}'
-SPECIMEN_DIR=f'{path}/data/specimens/{path_date}'
-IMAGE_OUTPUT_DIR=f'{path}/data/gan_output/{path_date}'
-BENCHMARK_DATA_DIR=f'{path}/benchmarking'
+# MODEL_CHECKPOINT_DIR=f'{path}/data/{path_date}/training_checkpoints'
+# SPECIMEN_DIR=f'{path}/data/{path_date}/specimens'
+# IMAGE_OUTPUT_DIR=f'{path}/data/{path_date}/gan_output'
+BENCHMARK_DATA_DIR=f'{PATH}/benchmarking'
 
 
 ########################################################################

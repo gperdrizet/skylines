@@ -3,11 +3,13 @@ import os.path
 import pickle
 import pathlib
 from os import listdir
-#sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), os.path.pardir)))
 
 import config as conf
 import functions.training_functions as training_funcs
 import tensorflow as tf
+
+# Clean up STDOUT
+tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 
 if __name__ == '__main__':
 
@@ -19,7 +21,7 @@ if __name__ == '__main__':
     resume_from=int(args[3])
 
     # Load latent point
-    with open(f'{conf.path}/data/specimens/{run_date}/{laten_point_file}', 'rb') as f:
+    with open(f'{conf.PATH}/data/{run_date}/specimens/{laten_point_file}', 'rb') as f:
        latent_point=pickle.load(f)
 
     f.close()
@@ -27,7 +29,7 @@ if __name__ == '__main__':
     print(f'Loaded latent point has shape {latent_point.shape}')
 
     # Prep output directory for frames
-    output_path=f'{conf.path}/data/specimens/{run_date}/training_sequence'
+    output_path=f'{conf.PATH}/data/{run_date}/specimens/training_sequence'
 
     # Check if the directory exists
     if pathlib.Path(output_path).is_dir():
@@ -49,7 +51,7 @@ if __name__ == '__main__':
     # Assign to CPU incase another training run is going in the background
     with tf.device('/GPU:0'):
 
-        model_checkpoint_dir=f'{conf.path}/data/training_checkpoints/{run_date}/'
+        model_checkpoint_dir=f'{conf.PATH}/data/{run_date}/training_checkpoints/'
         models=[f for f in listdir(model_checkpoint_dir) if 'generator' in f] #if isfile(join(model_checkpoint_dir, f))]
         models=sorted(models)
 

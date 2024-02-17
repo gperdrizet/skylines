@@ -4,8 +4,8 @@
 # Sets some environment variables. See skylines/config.py for
 # additional run options.
 
-RESUME=True
-RESUME_RUN_DATE='2024-02-11'
+RESUME='True'
+RESUME_RUN_DATE='2024-02-17'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
