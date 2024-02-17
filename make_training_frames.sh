@@ -3,7 +3,7 @@
 # Convenience script to generate video of training
 # from model checkpoints and latent point
 
-# Which run date and specimen to use
+# Which run date and specimen latent point to use
 RUN_DATE='2024-02-11'
 SPECIMEN_LATEN_POINTS='5695.3_latent_points.pkl'
 
@@ -14,7 +14,7 @@ RESUME='True'
 # paths list and number for frame output. This alows the 
 # generation of squentialy numbered frames from non-sequential
 # model snapshots
-RESUME_FRAME='1781'
+RESUME_FRAME='8087'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
