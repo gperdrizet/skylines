@@ -16,12 +16,12 @@ if __name__ == '__main__':
     # collect command line arguments
     args=sys.argv[1:]
     run_date=str(args[0])
-    laten_point_file=str(args[1])
+    specimen_latent_point=str(args[1])
     resume=str(args[2])
     resume_from=int(args[3])
 
     # Load latent point
-    with open(f'{conf.PATH}/data/{run_date}/specimens/{laten_point_file}', 'rb') as f:
+    with open(f'{conf.PATH}/data/{run_date}/specimens/{specimen_latent_point}_latent_points.pkl', 'rb') as f:
        latent_point=pickle.load(f)
 
     f.close()
@@ -29,7 +29,7 @@ if __name__ == '__main__':
     print(f'Loaded latent point has shape {latent_point.shape}')
 
     # Prep output directory for frames
-    output_path=f'{conf.PATH}/data/{run_date}/specimens/training_sequence'
+    output_path=f'{conf.PATH}/data/{run_date}/specimens/{specimen_latent_point}_training_sequence'
 
     # Check if the directory exists
     if pathlib.Path(output_path).is_dir():

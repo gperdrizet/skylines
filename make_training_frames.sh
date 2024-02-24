@@ -5,7 +5,7 @@
 
 # Which run date and specimen latent point to use
 RUN_DATE='2024-02-17'
-SPECIMEN_LATEN_POINTS='30.2_latent_points.pkl'
+SPECIMEN_LATEN_POINT='16500.21'
 
 # Resume or add to a previous frame generation run
 RESUME='False'
@@ -37,4 +37,4 @@ export CUDA_VISIBLE_DEVICES=0
 export TF_FORCE_GPU_ALLOW_GROWTH=false
 
 # Make images
-python ./skylines/make_training_frames.py $RUN_DATE $SPECIMEN_LATEN_POINTS $RESUME $RESUME_FRAME
+python ./skylines/make_training_frames.py $RUN_DATE $SPECIMEN_LATEN_POINT $RESUME $RESUME_FRAME
