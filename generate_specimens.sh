@@ -4,8 +4,8 @@
 
 # Which model to use/how many images to make
 RUN_DATE='2024-02-17'
-MODEL_CHECKPOINT=30
-NUM_IMAGES=3
+MODEL_CHECKPOINT=18218
+NUM_IMAGES=30
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
@@ -22,7 +22,7 @@ export TCMALLOC_LARGE_ALLOC_REPORT_THRESHOLD=38654705664
 export TF_CPP_MIN_LOG_LEVEL=2
 
 # Set visible GPUs
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 
 # Prevent tensorflow from automapping all GPU memory
 export TF_FORCE_GPU_ALLOW_GROWTH=false
