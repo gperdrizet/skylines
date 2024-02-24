@@ -40,11 +40,17 @@ GPUS=[
     '/job:localhost/replica:0/task:0/device:GPU:1'
 ]
 
+# Note: skylines run 1 and 2 used 4 GPUs so actual batch size was
+# 4x3 = 12 rather than 2*3 = 6. This seems to be the only major
+# difference between the original runs and now.
+#
+# Learning rate: skylines.1 = 0.00005, skylines.2 = 0.0001
+
 GPU_PARALLELISM='central storage'
 LATENT_DIM=100
-DISCRIMINATOR_LEARNING_RATE=0.00005 #0.00005
-GENERATOR_LEARNING_RATE=0.00005 #0.00005
-GANN_LEARNING_RATE=0.00005 #0.00005
+DISCRIMINATOR_LEARNING_RATE=0.000025
+GENERATOR_LEARNING_RATE=0.000025
+GANN_LEARNING_RATE=0.000025
 BATCH_SIZE=int(3 * len(GPUS))
 EPOCHS=100000
 
