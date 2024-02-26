@@ -51,7 +51,7 @@ Another issue is the size on disk - model checkpoints are being saved after ever
 
 Latent points for training sequences were chosen based on the following specimens:
 
-1. 16500.28
-2. 18218.29
-3. 18218.3
-4. 16500.
+1. 16500.28 - complete 1o 19000 frames
+2. 18218.29 - running on GPU 0
+3. 18218.3 - running on GPU 1
+4. 16500.21 - running on GPU 2
