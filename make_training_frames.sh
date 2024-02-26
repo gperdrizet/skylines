@@ -5,16 +5,16 @@
 
 # Which run date and specimen latent point to use
 RUN_DATE='2024-02-17'
-SPECIMEN_LATEN_POINT='16500.21'
+SPECIMEN_LATEN_POINT='18218.3'
 
 # Resume or add to a previous frame generation run
-RESUME='False'
+RESUME='True'
 
 # Frame number to resume from. Is used as index of model in model 
 # paths list and number for frame output. This alows the 
 # generation of squentialy numbered frames from non-sequential
 # model snapshots
-RESUME_FRAME='0'
+RESUME_FRAME='16826'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
@@ -31,7 +31,7 @@ export TCMALLOC_LARGE_ALLOC_REPORT_THRESHOLD=38654705664
 export TF_CPP_MIN_LOG_LEVEL=3
 
 # Set visible GPUs
-export CUDA_VISIBLE_DEVICES=0
+export CUDA_VISIBLE_DEVICES=1
 
 # Prevent tensorflow from automapping all GPU memory
 export TF_FORCE_GPU_ALLOW_GROWTH=false
