@@ -5,16 +5,16 @@
 
 # Which run date and specimen latent point to use
 RUN_DATE='2024-02-17'
-SPECIMEN_LATEN_POINT='18218.3'
+SPECIMEN_LATEN_POINT='18218.6'
 
 # Resume or add to a previous frame generation run
-RESUME='True'
+RESUME='False'
 
 # Frame number to resume from. Is used as index of model in model 
 # paths list and number for frame output. This alows the 
 # generation of squentialy numbered frames from non-sequential
 # model snapshots
-RESUME_FRAME='16826'
+RESUME_FRAME='0'
 
 # Set LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=`pwd`/.venv/lib/
