@@ -54,7 +54,7 @@ if __name__ == '__main__':
     
     # If we only have one GPU or are explicitly not using parallelism, prep the models
     # outside of a tf.distribute strategy
-    if config.GPU_PARALLELISM == None or len(tf.config.experimental.list_physical_devices('GPU')) == 1:
+    if config.GPU_PARALLELISM == None: # or len(tf.config.experimental.list_physical_devices('GPU')) == 1:
 
         print('Running on single GPU')
 
@@ -70,7 +70,7 @@ if __name__ == '__main__':
         )
 
     # If we have more than one GPU and a parallelism strategy was set in config.py, set up a scope for it
-    elif config.GPU_PARALLELISM != None and len(tf.config.experimental.list_physical_devices('GPU')) > 1:
+    elif config.GPU_PARALLELISM != None: # and len(tf.config.experimental.list_physical_devices('GPU')) > 1:
 
         print(f'Running on {len(tf.config.experimental.list_physical_devices("GPU"))} GPUs with {config.GPU_PARALLELISM} strategy')
 

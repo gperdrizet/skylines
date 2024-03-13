@@ -2,8 +2,6 @@
 
 Skylines uses an in-house, *de novo* trained convolutional neural network. Both the dataset and model architecture were custom designed and built to illustrate mechanical 'imagination'.
 
-Generation uses a convolutional neural network adversarially trained on 261 real images of city skylines.
-
 ## 1. Data source
 
 Images of city skylines were manually curated from Google image search. The resulting set of images were then scaled to 1024 x 1024 pixels and mirrored to maximize dataset diversity.

@@ -19,7 +19,7 @@ That's from just one short-ish run, with one set of configuration variables and 
 
 ### 1.2
 
-Each model is a more or less 'good' method to find city-ness in an n 100 vector of random numbers.
+Each model is a more or less 'good' method to find city-ness in an n=100 vector of random numbers.
 
 ### 1.3
 
@@ -57,3 +57,40 @@ Latent points for training sequences were chosen based on the following specimen
 4. 16500.21 - complete to 19000 frames, video finished
 5. 18218.11 - complete to 19000 frames, video finished
 6. 18218.6 - complete to 19000 frames, video finished
+
+Ok, now that we have good documentation of and training videos for the current state of the model, let's get rid of some of the earlier checkpoints to free up disk space.
+
+Plan is to just delete checkpoints such that we keep only one every 10 batches instead of every batch. This will give a 10 fold reduction of size on disk, i.e.:
+
+```text
+rm -r discriminator_model_f00*1
+rm -r discriminator_model_f00*2
+rm -r discriminator_model_f00*3
+rm -r discriminator_model_f00*4
+rm -r discriminator_model_f00*5
+rm -r discriminator_model_f00*6
+rm -r discriminator_model_f00*7
+rm -r discriminator_model_f00*8
+rm -r discriminator_model_f00*9
+```
+
+Leaving any discriminator model checkpoints which end in '0' and doing the same for the generator models. This gives us some leeway to restart training at and earlier timesteps and preserves some of the partially trained models.
+
+Resulted in a reduction from over 9 TB to around 900 GB. If needed, we can use this approach to reduce the disk space occupied by keeping only very hundredth or thousandth checkpoint.
+
+Today is 2024-03-13, let's resume training on our GTX1070. Here are the run settings from config.py:
+
+```text
+GPUS=[
+    '/job:localhost/replica:0/task:0/device:GPU:0'
+]
+
+GPU_PARALLELISM=None
+LATENT_DIM=100
+DISCRIMINATOR_LEARNING_RATE=0.000025
+GENERATOR_LEARNING_RATE=0.000025
+GANN_LEARNING_RATE=0.000025
+BATCH_SIZE=3
+EPOCHS=100000
+CHECKPOINT_SAVE_FREQUENCY=1
+```
