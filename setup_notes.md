@@ -144,3 +144,9 @@ This one is pretty specific to our hardware configuration, but might be useful t
 # Fast scratch bind mount for skylines project
 /mnt/fast_scratch/skylines /mnt/arkk/rpm/skylines/skylines/skylines/data none x-systemd.requires=/mnt/fast_scratch,x-systemd.requires=/mnt/arkk,x-systemd.automount,bind 0 0
 ```
+
+## 6. Removing large files from git tracking
+
+```text
+git filter-branch --tree-filter 'rm -f path/to/big/file' HEAD
+```
