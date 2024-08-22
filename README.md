@@ -1,6 +1,6 @@
 # skylines
 
-![Skylines banner](https://github.com/gperdrizet/skylines/blob/CAA/CAA_artifacts/2022-03-23_specimens/skylines_banner.jpg)
+![Skylines banner](https://github.com/gperdrizet/skylines/blob/main/CAA_artifacts/2022-03-23_specimens/skylines_banner.jpg)
 
 This project was originally conceived in ~2020 as a method to gain intuition about convolution, GANs and generated imagery via experimentation. The neural networks created was designed to be trainable on easily accessible hardware (e.g. NVIDIA K80), with small datasets and to illustrate what sort of 'imagination' a machine is capable of. The original generation targets included: flowers, city skylines, nebulae, hands, fruit and birds.
 
