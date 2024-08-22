@@ -94,3 +94,5 @@ BATCH_SIZE=3
 EPOCHS=100000
 CHECKPOINT_SAVE_FREQUENCY=1
 ```
+
+Trained to ~24,000 batches, model made no visual progress. Locked with large d2 loss and zero g loss after the first few batches. Learning rate either too large or too small.
